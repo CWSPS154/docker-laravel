@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libgd-dev \
     jpegoptim optipng pngquant gifsicle \
-    libonig-dev \
     libwebp-dev \
     xdg-utils \
     links \
@@ -42,7 +41,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application source code
 COPY . /var/www/html
 
-# Set permissions for Laravel
+# Set permissions for Laravel directories
 RUN chown -R www-data:www-data /var/www/html/src \
     && chmod -R 775 /var/www/html/src/storage \
     && chmod -R 775 /var/www/html/src/bootstrap/cache
