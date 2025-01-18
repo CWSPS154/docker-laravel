@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Function to check if a port is in use
+is_port_in_use() {
+  if lsof -Pi :$1 -sTCP:LISTEN -t >/dev/null ; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Check ports
+check_ports() {
+  ports=($WEB_PORT $WEB_SSL_PORT $DB_PORT)
+  for port in "${ports[@]}"
+  do
+    if is_port_in_use $port; then
+      echo "Port $port is already in use. Please update the .env file with available ports."
+      exit 1
+    fi
+  done
+}
+
+check_ports

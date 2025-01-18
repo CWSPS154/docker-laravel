@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Rolling back changes..."
+docker-compose -f compose/docker-compose.yml down -v
+echo "Rollback complete."
