@@ -47,7 +47,7 @@ RUN chown -R www-data:www-data /var/www/html/src \
     && chmod -R 775 /var/www/html/src/bootstrap/cache
 
 # Change current user to www-data
-USER www-data
+USER www-data 
 
 # Set permissions for Laravel storage and cache folders
 RUN chown -R www-data:www-data src/storage src/bootstrap/cache src/.env

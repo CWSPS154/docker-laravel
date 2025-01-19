@@ -11,7 +11,7 @@
    ```bash
    git clone https://github.com/CWSPS154/docker-laravel.git
    cd docker-laravel
-   copy compose/.env.example compose/.env and make your changes
+   cp compose/.env.example compose/.env #and make your changes
    ```
 2. Run the setup script:
    ```bash
@@ -22,20 +22,15 @@
 3. Access the application:
    - Laravel App: `http://${DOMAIN}:${WEB_PORT}`
 
-[//]: # (## Setup Custom Domain)
-
-[//]: # ()
-[//]: # (To set up a custom domain with SSL, run the following command:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (./bin/setup-domain your-custom-domain.com)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (Replace your-custom-domain.com with your actual domain name. This will update the Nginx configuration, obtain SSL certificates from Let's Encrypt, and restart the Nginx container.)
+[//]: # "## Setup Custom Domain"
+[//]: #
+[//]: # "To set up a custom domain with SSL, run the following command:"
+[//]: #
+[//]: # "```bash"
+[//]: # "./bin/setup-domain your-custom-domain.com"
+[//]: # "```"
+[//]: #
+[//]: # "Replace your-custom-domain.com with your actual domain name. This will update the Nginx configuration, obtain SSL certificates from Let's Encrypt, and restart the Nginx container."
 
 ## Common Commands
 
@@ -56,7 +51,9 @@
 ```bash
 ./bin/cli migrate
 ```
+
 - Some other commands
+
 ```bash
 ./bin/bash #for accessing docker app bash
 
