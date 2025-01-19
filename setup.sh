@@ -206,3 +206,4 @@ laravel_configure || handle_error
 run_artisan "key:generate" || handle_error
 
 echo "Setup complete. Your Laravel application is now running."
+echo "You can access it at http://${DOMAIN}:${WEB_PORT}"

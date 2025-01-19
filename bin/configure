@@ -21,12 +21,13 @@ if [ -f compose/.env ]; then
 fi
 
 # Update the .env file with the necessary configurations
-update_env_file "APP_URL" "$APP_URL"
+update_env_file "APP_URL" "$APP_URL:$WEB_HOST"
 update_env_file "DB_CONNECTION" "$DB_CONNECTION"
 update_env_file "DB_HOST" "$DB_HOST"
 update_env_file "DB_PORT" "$DB_PORT"
 update_env_file "DB_DATABASE" "$DB_DATABASE"
 update_env_file "DB_USERNAME" "$DB_USERNAME"
 update_env_file "DB_PASSWORD" "$DB_PASSWORD"
+update_env_file "SESSION_DRIVER" "$SESSION_DRIVER"
 
 echo ".env file has been updated with the necessary configurations."

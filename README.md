@@ -11,7 +11,7 @@
    ```bash
    git clone https://github.com/CWSPS154/docker-laravel.git
    cd docker-laravel
-   cp .env.example .env and update your domain and ports
+   copy compose/.env.example compose/.env and make your changes
    ```
 2. Run the setup script:
    ```bash
@@ -20,17 +20,22 @@
    chmod +x bin/*
    ```
 3. Access the application:
-   - Laravel App: http://localhost:${WEB_PORT}
+   - Laravel App: `http://${DOMAIN}:${WEB_PORT}`
 
-## Setup Custom Domain
+[//]: # (## Setup Custom Domain)
 
-To set up a custom domain with SSL, run the following command:
+[//]: # ()
+[//]: # (To set up a custom domain with SSL, run the following command:)
 
-```bash
-./bin/setup-domain your-custom-domain.com
-```
+[//]: # ()
+[//]: # (```bash)
 
-Replace your-custom-domain.com with your actual domain name. This will update the Nginx configuration, obtain SSL certificates from Let's Encrypt, and restart the Nginx container.
+[//]: # (./bin/setup-domain your-custom-domain.com)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (Replace your-custom-domain.com with your actual domain name. This will update the Nginx configuration, obtain SSL certificates from Let's Encrypt, and restart the Nginx container.)
 
 ## Common Commands
 
@@ -46,10 +51,20 @@ Replace your-custom-domain.com with your actual domain name. This will update th
 ./bin/stop
 ```
 
-- Run Laravel Artisan commands:
+- Run Laravel Artisan commands: using `./bin/cli`
 
 ```bash
 ./bin/cli migrate
+```
+- Some other commands
+```bash
+./bin/bash #for accessing docker app bash
+
+./bin/restart #restart containers
+
+./bin/rollback #if anything goes wrong you can rollback everything
+
+./bin/status #to check container status
 ```
 
 ## Troubleshooting
