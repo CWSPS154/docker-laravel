@@ -22,9 +22,9 @@ fi
 
 # Update the .env file with the necessary configurations
 update_env_file "APP_URL" "$APP_URL"
-update_env_file "DB_CONNECTION" "mysql"
-update_env_file "DB_HOST" "mysql"
-update_env_file "DB_PORT" "3306"
+update_env_file "DB_CONNECTION" "$DB_CONNECTION"
+update_env_file "DB_HOST" "$DB_HOST"
+update_env_file "DB_PORT" "$DB_PORT"
 update_env_file "DB_DATABASE" "$DB_DATABASE"
 update_env_file "DB_USERNAME" "$DB_USERNAME"
 update_env_file "DB_PASSWORD" "$DB_PASSWORD"

@@ -7,7 +7,7 @@ handle_error() {
   exit 1
 }
 
-# Function to setup laravel configurations
+# Function to setup Laravel configurations
 laravel_configure() {
   echo "Setting up your Laravel configurations."
   chmod +x bin/configure && ./bin/configure
@@ -24,6 +24,16 @@ run_artisan() {
   chmod +x bin/cli && ./bin/cli $cmd
   if [ $? -ne 0 ]; then
     echo "Artisan command failed: $cmd"
+    handle_error
+  fi
+}
+
+# Function to setup custom domain
+setup_domain() {
+  echo "Setting up custom domain."
+  chmod +x bin/setup-domain && ./bin/setup-domain
+  if [ $? -ne 0 ]; then
+    echo "Custom domain setup failed."
     handle_error
   fi
 }
@@ -210,13 +220,15 @@ docker-compose -f compose/docker-compose.yml exec -u root app sh -c "chown -R ww
 laravel_configure || handle_error
 
 # Generate application key
-run_artisan "key:generate"
+run_artisan "key:generate" || handle_error
 
 # Run database migrations
-run_artisan "migrate"
+run_artisan "migrate" || handle_error
 
 # Seed the database
-run_artisan "db:seed"
+run_artisan "db:seed" || handle_error
+
+# Setup custom domain
+setup_domain || handle_error
 
 echo "Setup complete. Your Laravel application is now running."
-echo "You can access it at http://localhost:${WEB_PORT}"

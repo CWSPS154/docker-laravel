@@ -1,25 +1,25 @@
 #!/bin/bash
 
-DOMAIN=$1
+# Function to update the hosts file for custom domain
+setup_hosts_file() {
+  local domain=$1
+  local ip="127.0.0.1"
+  if ! grep -q "$domain" /etc/hosts; then
+    echo "$ip $domain" | sudo tee -a /etc/hosts > /dev/null
+    echo "Custom domain $domain added to /etc/hosts"
+  else
+    echo "Custom domain $domain already exists in /etc/hosts"
+  fi
+}
 
-if [ -z "$DOMAIN" ]; then
-  echo "Usage: ./bin/setup-domain your-custom-domain.com"
-  exit 1
+# Load environment variables from compose/.env if it exists
+if [ -f compose/.env ]; then
+  set -a
+  source compose/.env
+  set +a
 fi
 
-# Update environment variables with the custom domain
-sed -i "s/^DOMAIN=.*/DOMAIN=$DOMAIN/" .env
+# Update the hosts file with the custom domain
+setup_hosts_file "$APP_URL"
 
-# Update Nginx configuration with the custom domain
-sed -i "s/\${DOMAIN}/$DOMAIN/g" docker/nginx/default.conf
-
-# Restart the Nginx container
-docker-compose -f compose/docker-compose.yml restart web
-
-# Obtain SSL certificates using Certbot
-docker-compose -f compose/docker-compose.yml run --rm certbot certonly --webroot --webroot-path=/var/www/certbot --email your-email@example.com --agree-tos --no-eff-email -d $DOMAIN
-
-# Reload Nginx with the new certificates
-docker-compose -f compose/docker-compose.yml restart web
-
-echo "Custom domain setup complete. Your application is now accessible at https://$DOMAIN"
+echo "Custom domain setup complete."
