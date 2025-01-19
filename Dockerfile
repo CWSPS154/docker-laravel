@@ -1,5 +1,5 @@
 # Use the latest official PHP image as the base image
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 # Set working directory
 WORKDIR /var/www/html
@@ -48,6 +48,10 @@ RUN chown -R www-data:www-data /var/www/html/src \
 
 # Change current user to www-data
 USER www-data
+
+# Set permissions for Laravel storage and cache folders
+RUN chown -R www-data:www-data src/storage src/bootstrap/cache src/.env
+RUN chmod -R 775 src/storage src/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

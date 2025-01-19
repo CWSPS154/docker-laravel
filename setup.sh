@@ -28,16 +28,6 @@ run_artisan() {
   fi
 }
 
-# Function to setup custom domain
-setup_domain() {
-  echo "Setting up custom domain."
-  chmod +x bin/setup-domain && ./bin/setup-domain
-  if [ $? -ne 0 ]; then
-    echo "Custom domain setup failed."
-    handle_error
-  fi
-}
-
 # Ensure all scripts in the bin directory have executable permissions
 chmod +x bin/*
 
@@ -148,12 +138,11 @@ services:
       - ../:/var/www/html
       - ../docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
-      - mysql
+      - db
     networks:
       - laravel
     command: >
-      sh -c "
-        php-fpm"
+      sh -c "php-fpm"
 
   web:
     image: nginx:alpine
@@ -161,7 +150,6 @@ services:
     restart: unless-stopped
     ports:
       - "\$WEB_PORT:80"
-      - "\$WEB_SSL_PORT:443"
     volumes:
       - ../:/var/www/html
       - ../docker/nginx/conf.d:/etc/nginx/conf.d
@@ -170,7 +158,7 @@ services:
     networks:
       - laravel
 
-  mysql:
+  db:
     image: mysql:8.0
     container_name: laravel_db
     restart: unless-stopped
@@ -185,11 +173,6 @@ services:
       - "\$DB_PORT:3306"
     networks:
       - laravel
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 networks:
   laravel:
@@ -221,14 +204,5 @@ laravel_configure || handle_error
 
 # Generate application key
 run_artisan "key:generate" || handle_error
-
-# Run database migrations
-run_artisan "migrate" || handle_error
-
-# Seed the database
-run_artisan "db:seed" || handle_error
-
-# Setup custom domain
-setup_domain || handle_error
 
 echo "Setup complete. Your Laravel application is now running."
