@@ -1,3 +1,4 @@
 src/*
 compose/.env
 compose/docker-compose.yml
+.idea/

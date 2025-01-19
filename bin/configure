@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Function to update .env file
+update_env_file() {
+  local key=$1
+  local value=$2
+  if grep -q "^# $key=" src/.env; then
+    sudo sed -i "s|^# $key=.*|$key=$value|g" src/.env
+  elif grep -q "^$key=" src/.env; then
+    sudo sed -i "s|^$key=.*|$key=$value|g" src/.env
+  else
+    echo "$key=$value" | sudo tee -a src/.env > /dev/null
+  fi
+}
+
+# Load environment variables from compose/.env if it exists
+if [ -f compose/.env ]; then
+  set -a
+  source compose/.env
+  set +a
+fi
+
+# Update the .env file with the necessary configurations
+update_env_file "APP_URL" "$APP_URL"
+update_env_file "DB_CONNECTION" "mysql"
+update_env_file "DB_HOST" "mysql"
+update_env_file "DB_PORT" "3306"
+update_env_file "DB_DATABASE" "$DB_DATABASE"
+update_env_file "DB_USERNAME" "$DB_USERNAME"
+update_env_file "DB_PASSWORD" "$DB_PASSWORD"
+
+echo ".env file has been updated with the necessary configurations."

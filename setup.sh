@@ -7,6 +7,16 @@ handle_error() {
   exit 1
 }
 
+# Function to setup laravel configurations
+laravel_configure() {
+  echo "Setting up your Laravel configurations."
+  chmod +x bin/configure && ./bin/configure
+  if [ $? -ne 0 ]; then
+    echo "Laravel configuration failed."
+    handle_error
+  fi
+}
+
 # Function to run Artisan commands
 run_artisan() {
   local cmd=$1
@@ -128,7 +138,7 @@ services:
       - ../:/var/www/html
       - ../docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
-      - db
+      - mysql
     networks:
       - laravel
     command: >
@@ -150,7 +160,7 @@ services:
     networks:
       - laravel
 
-  db:
+  mysql:
     image: mysql:8.0
     container_name: laravel_db
     restart: unless-stopped
@@ -184,6 +194,9 @@ if [ ! -f src/.env ]; then
   cp src/.env.example src/.env || handle_error
 fi
 
+# Ensure the .env file has write permissions for the current user
+sudo chmod 777 src/.env
+
 # Disable BuildKit for Docker
 unset DOCKER_BUILDKIT
 
@@ -192,6 +205,9 @@ docker-compose -f compose/docker-compose.yml up --build -d || handle_error
 
 # Set permissions from within the container
 docker-compose -f compose/docker-compose.yml exec -u root app sh -c "chown -R www-data:www-data /var/www/html/src && chmod -R 775 /var/www/html/src/storage && chmod -R 775 /var/www/html/src/bootstrap/cache" || handle_error
+
+# Laravel Configuration
+laravel_configure || handle_error
 
 # Generate application key
 run_artisan "key:generate"
