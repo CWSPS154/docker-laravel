@@ -197,7 +197,7 @@ unset DOCKER_BUILDKIT
 docker-compose -f compose/docker-compose.yml up --build -d || handle_error
 
 # Set permissions from within the container
-docker-compose -f compose/docker-compose.yml exec -u root app sh -c "chown -R www-data:www-data /var/www/html/src && chmod -R 775 /var/www/html/src/storage && chmod -R 775 /var/www/html/src/bootstrap/cache" || handle_error
+docker-compose -f compose/docker-compose.yml exec -u root app sh -c "chown -R www-data:www-data /var/www/html/src && chmod -R 775 /var/www/html/src/storage && chmod -R 775 /var/www/html/src/bootstrap/cache && chmod -R 777 /var/www/html/src/" || handle_error
 
 # Laravel Configuration
 laravel_configure || handle_error

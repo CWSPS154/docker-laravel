@@ -55,6 +55,8 @@
 - Some other commands
 
 ```bash
+./bin/composer #for installing composer packages
+
 ./bin/bash #for accessing docker app bash
 
 ./bin/restart #restart containers

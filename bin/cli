@@ -1,2 +1,4 @@
 #!/bin/bash
 docker-compose -f compose/docker-compose.yml exec app php /var/www/html/src/artisan "$@"
+
+docker-compose -f compose/docker-compose.yml exec app chmod -R 777 /var/www/html/src/

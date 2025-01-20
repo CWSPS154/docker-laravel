@@ -1,2 +1,9 @@
 #!/bin/bash
-docker-compose -f compose/docker-compose.yml exec app bash
+case "$1" in
+  bash)
+    docker-compose -f compose/docker-compose.yml exec app bash
+    ;;
+  *)
+  docker-compose -f compose/docker-compose.yml exec app "$@"
+  ;;
+esac
